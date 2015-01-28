@@ -1,0 +1,18 @@
+$breakpoints: (
+	'xs': ( min: 30em ),
+	'sm': ( min: 48em ),
+	'md': ( min: 62em ),
+	'lg': ( min: 75em ),
+);
+
+$columns: 12;
+
+
+$gutter-width: 1rem;
+$outer-margin: 2rem;
+$gutter-compensation: $gutter-width/2 - 1;
+$half-gutter-width: $gutter-width / 2;
+
+$container-sm: 45rem + $gutter-width;
+$container-md: 60rem + $gutter-width;
+$container-lg: 70rem + $gutter-width;

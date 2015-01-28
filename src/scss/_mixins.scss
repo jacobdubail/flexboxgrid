@@ -1,0 +1,114 @@
+
+
+
+@mixin bp($point) { // = xs, sm, md
+  $query: "";
+  @if map-has-key($breakpoints, $point) {
+  	$key: map-get($breakpoints, $point);
+	  @if map-has-key($key, min) { 
+	  	$query: append($query, "(min-width: #{map-get($key, min)})") 
+	  }
+	  @if map-has-key($key, min) and map-has-key($key, max) { 
+	  	$query: append($query, "and") 
+	  }
+	  @if map-has-key($key, max) { 
+	  	$query: append($query, "(max-width: #{map-get($key, max)})") 
+	  }
+	  @media screen and #{$query} { @content; }
+	}
+	@else {
+		@content;
+	}  
+}
+
+
+/* GRID MIXINS */
+@mixin calc-grid($index, $class) {
+
+	$width: percentage(($index / $columns));
+
+	.col-#{$class}-#{$index} {
+	  flex-basis: $width;
+	  max-width: $width;
+	}
+
+	.col-#{$class}-push-#{$index} {
+	  left: $width;
+	}
+
+	.col-#{$class}-pull-#{$index} {
+	  right: $width;
+	}
+	.col-#{$class}-offset-#{$index} {
+	  margin-left: $width;
+	}
+}
+
+@mixin make-grid($columns, $class) {
+  @for $i from 0 through $columns {
+    @include calc-grid($i, $class);
+  }
+}
+
+
+@for $i from 1 through length($breakpoints) {
+	$keys : map-keys($breakpoints);
+	$size : nth( $keys, $i );
+
+	@include bp( $size ) {
+		@include make-grid($columns, $size);
+
+		// .container {
+	 //    width: $container-#{$size};
+	 //  }
+
+		.col-#{$size} {
+		  flex-grow: 1;
+		  flex-basis: 0;
+		  max-width: 100%;
+		}
+
+		.start-#{$size} {
+		  justify-content: flex-start;
+		  text-align: start;
+		}
+
+		.center-#{$size} {
+		  justify-content: center;
+		  text-align: center;
+		}
+
+		.end-#{$size} {
+		  justify-content: flex-end;
+		  text-align: end;
+		}
+
+		.top-#{$size} {
+		  align-items: flex-start;
+		}
+
+		.middle-#{$size} {
+		  align-items: center;
+		}
+
+		.bottom-#{$size} {
+		  align-items: flex-end;
+		}
+
+		.around-#{$size} {
+		  justify-content: space-around;
+		}
+
+		.between-#{$size} {
+		  justify-content: space-between;
+		}
+
+		.first-#{$size} {
+		  order: -1;
+		}
+
+		.last-#{$size} {
+		  order: 1;
+		}
+	}
+}
